@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Системная ошибка</title>
+    <style>
+        body {
+            background-color: #080808;
+            color: #ff3333;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+            user-select: none;
+        }
+
+        #alert-text {
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: none;
+            color: #ff2222;
+            text-shadow: 0 0 12px #ff0000;
+        }
+
+        #scan-container {
+            display: none;
+        }
+
+        .spinner {
+            border: 4px solid #222;
+            border-top: 4px solid #ff2222;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 0.8s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #percent {
+            font-size: 56px;
+            font-weight: bold;
+            color: #ff3333;
+            text-shadow: 0 0 10px #ff0000;
+            margin-top: 10px;
+        }
+
+        #status {
+            font-size: 18px;
+            color: #cccccc;
+            margin-top: 10px;
+        }
+
+        /* Четкий мрачный финал */
+        .gloomy-end {
+            font-size: 26px !important;
+            font-weight: bold;
+            color: #ff1111 !important;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+            line-height: 1.4;
+        }
+
+        .sub-text {
+            font-size: 16px !important;
+            color: #ffffff !important;
+            margin-top: 20px;
+            font-weight: normal;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="alert-text">Опа, ты попался...(выйдешь из браузера телефон будет заблокирован)</div>
+
+    <div id="scan-container">
+        <div id="spinner-box" class="spinner"></div>
+        <div id="status">Сканирование устройства...</div>
+        <div id="percent">1%</div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            setTimeout(() => {
+                document.getElementById('alert-text').style.display = 'block';
+
+                setTimeout(() => {
+                    document.getElementById('scan-container').style.display = 'block';
+                    startScan();
+                }, 1200);
+
+            }, 1500);
+        };
+
+        function startScan() {
+            let count = 1;
+            const percentElem = document.getElementById('percent');
+            const statusElem = document.getElementById('status');
+            const alertText = document.getElementById('alert-text');
+            const spinner = document.getElementById('spinner-box');
+            
+            const interval = setInterval(() => {
+                count++;
+                percentElem.innerText = count + '%';
+
+                if (count >= 100) {
+                    clearInterval(interval);
+                    
+                    // Показываем финальную надпись
+                    spinner.style.display = 'none';
+                    alertText.style.display = 'none';
+                    percentElem.style.display = 'none';
+                    
+                    statusElem.innerHTML = "ВСЕ ДАННЫЕ У МЕНЯ.<br>ПОРОЛИ И ФОТО ГАЛЕРИИ.<br><div class='sub-text'>пишите за ценной мне время ограничено!</div>";
+                    statusElem.classList.add('gloomy-end');
+                }
+            }, 70);
+        }
+    </script>
+</body>
+</html>
